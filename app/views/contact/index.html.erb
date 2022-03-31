@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FactorialApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'index' %>
+
+  </head>
+
+  <body>
+
+    <% @contacts.each do |contact| %>
+        
+        <div class="col-md-12 col-lg-4" id="funciona">
+            <h3 class="text-center"><%= contact.firstName %></h3>
+            <p><%= contact.lastName %></p>
+        </div>
+    <% end %>
+  </body>
+</html>
