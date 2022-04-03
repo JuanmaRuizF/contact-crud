@@ -93,7 +93,7 @@ const EditContact = () => {
       },
       body: JSON.stringify(body),
     }).then((response) => {
-      console.log(response);
+      console.log(response.ok);
     });
   };
 
@@ -179,19 +179,23 @@ const EditContact = () => {
                     onChange={(e) => (phoneNumber = e.target.value)}
                   />
                 </div>
+                <div className="row">
+                  <div className="col-sm">
+                    <button
+                      onClick={(e) => {
+                        submitForm(e);
+                        // location.replace("http://localhost:3000/");
+                      }}
+                      className="btn custom-button mt-3"
+                    >
+                      Save changes
+                    </button>
+                  </div>
 
-                <button
-                  onClick={(e) => {
-                    console.log(submitForm(e));
-                    // location.replace("http://localhost:3000/contacts");
-                  }}
-                  className="btn custom-button mt-3"
-                >
-                  Save changes
-                </button>
-                <Link to="/contacts" className="btn btn-link mt-3">
-                  Back to contact list
-                </Link>
+                  <div className="col-sm text-end mt-3">
+                    <Link to="/">Back to contact list</Link>
+                  </div>
+                </div>
               </form>
             </div>
           </div>

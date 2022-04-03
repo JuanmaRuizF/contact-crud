@@ -23,15 +23,15 @@
 }
 
 .bg_secondary-color {
-    background-color: #293241;
+    background-color: #606f8a;
 }
 
 .secondary-color {
-    color: #293241;
+    color: #606f8a;
 }
 
 .custom-button.btn {
-    background-color: #293241;
+    background-color: #606f8a;
     color: #FFF;
     border: none;
 }
@@ -57,4 +57,14 @@
     height: 100%;
     width: 100%;
     opacity: 0.4;
+}
+
+.delete {
+    background-color: #eb4343;
+    color: white
+}
+
+.main {
+    background-color: #497ad4;
+    color: white;
 }

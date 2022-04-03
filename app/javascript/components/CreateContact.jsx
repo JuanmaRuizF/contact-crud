@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const CreateContact = (props) => {
+const CreateContact = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -85,19 +85,25 @@ const CreateContact = (props) => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
+            <div className="row">
+              <div className="col-sm">
+                <button
+                  onClick={(e) => {
+                    submitForm(e);
+                    // location.replace("http://localhost:3000/contacts");
+                  }}
+                  className="btn custom-button mt-3"
+                >
+                  Create Contact
+                </button>
+              </div>
 
-            <button
-              onClick={(e) => {
-                submitForm(e);
-                // location.replace("http://localhost:3000/contacts");
-              }}
-              className="btn custom-button mt-3"
-            >
-              Create Contact
-            </button>
-            <Link to="/contacts" className="btn btn-link mt-3">
-              Back to contact list
-            </Link>
+              <div className="col-sm text-end">
+                <Link to="/" className="btn btn-link mt-3 text-end">
+                  Back to contact list
+                </Link>
+              </div>
+            </div>
           </form>
         </div>
       </div>

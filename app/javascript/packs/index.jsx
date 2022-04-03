@@ -29,8 +29,6 @@ import React from "react";
 import { render } from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import App from "../components/App";
-import Home from "../components/Home";
 import Contacts from "../components/Contacts";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ViewContact from "../components/ViewContact";
@@ -42,8 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     <React.StrictMode>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/" element={<Contacts />} />
+          <Route path="*" element={<Contacts />} />
           <Route path="/contact/:id" element={<ViewContact />} />
           <Route path="/create_contact" element={<CreateContact />} />
           <Route path="/edit/:id" element={<EditContact />} />

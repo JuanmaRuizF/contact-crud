@@ -8,7 +8,6 @@ const Contacts = (props) => {
 
   const load_data = async () => {
     const url = "/api/v1/contacts/index";
-    // const url = "https://some-random-api.ml/facts/dog";
     await fetch(url)
       .then((response) => {
         if (response.ok) {
@@ -23,18 +22,34 @@ const Contacts = (props) => {
     load_data();
   }, []);
 
+  const deleteContact = (e, index) => {
+    const url = `/api/v1/destroy/${index}`;
+    fetch(url, {
+      method: "POST",
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Network response was not ok.");
+    });
+  };
   return (
     <>
       <section className="jumbotron jumbotron-fluid text-center">
-        <div className="container py-5">
+        <div className="container py-4">
           <h1 className="display-4">Contact List</h1>
-          <p className="lead text-muted">Texto</p>
+          <p className="lead text-muted">
+            A CRUD for contacts in React + Ruby on Rails
+          </p>
+        </div>
+        <div className="container">
+          <hr />
         </div>
       </section>
-      <div className="py-5">
+      <div className="py-4">
         <main className="container">
-          <div className="text-right mb-3">
-            <Link to="/create_contact" className="btn custom-button">
+          <div className="text-right mb-3 text-center">
+            <Link to="/create_contact" className="btn main">
               Create New Contact
             </Link>
           </div>
@@ -48,22 +63,45 @@ const Contacts = (props) => {
                     <div key={index} className="col-md-6 col-lg-4">
                       <div className="card mb-4">
                         <div className="card-body">
-                          <h5 className="card-title">{contact.firstName}</h5>
-                          <h5 className="card-title">{contact.lastName}</h5>
-                          <h5 className="card-title">{contact.email}</h5>
-                          <h5 className="card-title">{contact.phoneNumber}</h5>
-                          <Link
-                            to={`/contact/${contact.id}`}
-                            className="btn custom-button"
-                          >
-                            View Contact
-                          </Link>
-                          <Link
-                            to={`/edit/${contact.id}`}
-                            className="btn custom-button"
-                          >
-                            Edit Contact
-                          </Link>
+                          <h4 className="card-title text-center">
+                            {contact.firstName} {contact.lastName}
+                          </h4>
+                          <h6 className="card-title text-center">
+                            {contact.email}
+                          </h6>
+                          <h6 className="card-title text-center">
+                            {contact.phoneNumber}
+                          </h6>
+                          <h4 className="card-title text-center">Actions:</h4>
+                          <ul className="list-group list-group-flush">
+                            <li className="list-group-item text-center">
+                              <Link
+                                to={`/contact/${contact.id}`}
+                                className="btn custom-button"
+                              >
+                                View Contact
+                              </Link>
+                            </li>
+                            <li className="list-group-item text-center">
+                              <Link
+                                to={`/edit/${contact.id}`}
+                                className="btn custom-button"
+                              >
+                                Edit Contact
+                              </Link>
+                            </li>
+                            <li className="list-group-item text-center">
+                              <button
+                                className="btn delete"
+                                onClick={(e) => {
+                                  deleteContact(e, contact.id);
+                                  location.replace("http://localhost:3000/");
+                                }}
+                              >
+                                Delete Contact
+                              </button>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>
@@ -72,9 +110,6 @@ const Contacts = (props) => {
               </>
             )}
           </div>
-          <Link to="/" className="btn btn-link">
-            Home
-          </Link>
         </main>
       </div>
     </>
