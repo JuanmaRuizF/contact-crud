@@ -68,3 +68,7 @@
     background-color: #497ad4;
     color: white;
 }
+
+.error-text {
+    color: red;
+}

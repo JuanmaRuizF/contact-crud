@@ -14,7 +14,7 @@ const ViewContact = (props) => {
         if (response.ok) {
           return response.json();
         }
-        throw new Error("Network response was not ok.");
+        throw new Error("Network error");
       })
       .then((response) => setContactData(response))
       .then(() => setLoading(false));
@@ -35,7 +35,7 @@ const ViewContact = (props) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error("Network response was not ok.");
+      throw new Error("Network error");
     });
   };
 

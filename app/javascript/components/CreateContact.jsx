@@ -1,18 +1,56 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { validate } from "schema-utils";
 
 const CreateContact = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [errorMsg, setErrorMsg] = useState("");
   var historyEdits = "";
 
-  const submitForm = (event) => {
+  const validateFormValues = async () => {
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      phoneNumber === ""
+    ) {
+      setErrorMsg("There are fields bank. All fields are mandatory.");
+      return false;
+    }
+    let data;
+    let emailValidation = true;
+    fetch("/api/v1/contacts/index")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network error");
+      })
+      .then((response) => (data = response));
+
+    data.map((element) => {
+      console.log(element.email);
+      if (element.email === email) {
+        setErrorMsg("A contact with the same email already exists.");
+        emailValidation = false;
+      }
+    });
+
+    return emailValidation;
+  };
+
+  const submitForm = async (event) => {
     event.preventDefault();
 
     const url = "/api/v1/contacts/create";
 
+    if (!validateFormValues()) {
+      return false;
+    }
     const body = {
       firstName,
       lastName,
@@ -20,16 +58,24 @@ const CreateContact = () => {
       phoneNumber,
       historyEdits,
     };
-    console.log(JSON.stringify(body));
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch(url, {
+
+    let fetchResult;
+
+    await fetch(url, {
       method: "post",
       headers: {
-        "X-CSRF-Token": token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+    }).then((response) => {
+      if (response.ok) {
+        console.log("finfetch");
+        fetchResult = true;
+      } else {
+        fetchResult = false;
+      }
     });
+    return fetchResult;
   };
 
   return (
@@ -38,6 +84,7 @@ const CreateContact = () => {
         <div className="col-sm-12 col-lg-6 offset-lg-3">
           <h1 className="font-weight-normal mb-5">Add a new contact</h1>
           <form>
+            <div className="error-text">{errorMsg}</div>
             <div className="form-group">
               <label htmlFor="firstName">First name</label>
               <input
@@ -64,12 +111,11 @@ const CreateContact = () => {
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 id="email"
                 className="form-control"
                 required
-                pattern="^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -89,8 +135,13 @@ const CreateContact = () => {
               <div className="col-sm">
                 <button
                   onClick={(e) => {
-                    submitForm(e);
-                    // location.replace("http://localhost:3000/contacts");
+                    if (submitForm(e)) {
+                      // location.replace("http://localhost:3000/");
+                    } else {
+                      setTimeout(() => {
+                        setErrorMsg("");
+                      }, 5000);
+                    }
                   }}
                   className="btn custom-button mt-3"
                 >

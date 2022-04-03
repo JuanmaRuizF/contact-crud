@@ -13,7 +13,7 @@ const Contacts = (props) => {
         if (response.ok) {
           return response.json();
         }
-        throw new Error("Network response was not ok.");
+        throw new Error("Network error");
       })
       .then((response) => setContacts(response))
       .then(() => setLoading(false));
@@ -30,7 +30,7 @@ const Contacts = (props) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error("Network response was not ok.");
+      throw new Error("Network error");
     });
   };
   return (
@@ -69,9 +69,9 @@ const Contacts = (props) => {
                           <h6 className="card-title text-center">
                             {contact.email}
                           </h6>
-                          <h6 className="card-title text-center">
+                          {/* <h6 className="card-title text-center">
                             {contact.phoneNumber}
-                          </h6>
+                          </h6> */}
                           <h4 className="card-title text-center">Actions:</h4>
                           <ul className="list-group list-group-flush">
                             <li className="list-group-item text-center">
