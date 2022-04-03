@@ -54,11 +54,8 @@ class Api::V1::ContactsController < ApplicationController
   private
 
     def contact_params
-      params.permit(:firstName, :lastName, :email, :phoneNumber)
+      params.permit(:firstName, :lastName, :email, :phoneNumber, :historyEdits)
     end
 
-    # def contact
-    #   @contact ||= Contact.find(params[:id])
-    # end
   end
 

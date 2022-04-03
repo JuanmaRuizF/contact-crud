@@ -9,11 +9,7 @@ const EditContact = () => {
   var lastName = null;
   var email = null;
   var phoneNumber = null;
-
-  // const [firstName, setFirstName] = useState(null);
-  // const [lastName, setLastName] = useState(null);
-  // const [email, setEmail] = useState(null);
-  // const [phoneNumber, setPhoneNumber] = useState(null);
+  var historyEdits = "";
 
   const load_data = async (id) => {
     const url = `/api/v1/show/${id}`;
@@ -34,10 +30,38 @@ const EditContact = () => {
     load_data(url);
   }, []);
 
+  const checkFieldValues = (fieldName, fieldData) => {
+    if (fieldData === null || fieldData.length === 0) {
+      fieldData = contactData[0][fieldName];
+    } else if (fieldData !== contactData[0][fieldName]) {
+      if (historyEdits === "") {
+        historyEdits = contactData[0].historyEdits;
+        historyEdits += contactData[0][fieldName] + "->" + fieldData + " || ";
+      } else {
+        historyEdits += contactData[0][fieldName] + "->" + fieldData + " || ";
+      }
+    }
+  };
+
   const submitForm = (event) => {
     event.preventDefault();
     var id = window.location.href.toString().split("/")[4];
     const url = `/api/v1/edit/${id}`;
+
+    checkFieldValues("firstName", firstName);
+    checkFieldValues("lastName", lastName);
+    checkFieldValues("email", email);
+    checkFieldValues("phoneNumber", phoneNumber);
+    historyEdits = historyEdits.substring(0, historyEdits.length - 3) + " // ";
+
+    // if (firstName === null || firstName.length === 0) {
+    //   firstName = contactData[0].firstName;
+    // } else if (firstName !== contactData[0].firstName) {
+    //   if (historyEdits === null) {
+    //     historyEdits = contactData[0].historyEdits;
+    //     historyEdits += contactData[0].firstName + "->" + firstName + "||";
+    //   }
+    // }
 
     if (firstName === null || firstName.length === 0) {
       firstName = contactData[0].firstName;
@@ -57,16 +81,19 @@ const EditContact = () => {
       lastName,
       email,
       phoneNumber,
+      historyEdits,
     };
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch(url, {
+    return fetch(url, {
       method: "post",
       headers: {
         "X-CSRF-Token": token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+    }).then((response) => {
+      console.log(response);
     });
   };
 
@@ -96,7 +123,6 @@ const EditContact = () => {
                     id="firstName"
                     className="form-control"
                     required
-                    // onChange={(e) => setFirstName(e.target.value)}
                     onChange={(e) => (firstName = e.target.value)}
                   />
                 </div>
@@ -156,7 +182,7 @@ const EditContact = () => {
 
                 <button
                   onClick={(e) => {
-                    submitForm(e);
+                    console.log(submitForm(e));
                     // location.replace("http://localhost:3000/contacts");
                   }}
                   className="btn custom-button mt-3"

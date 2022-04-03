@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const ViewContact = (props) => {
   const [loading, setLoading] = useState(true);
   const [contactData, setContactData] = useState(null);
+  const [edits, setEdits] = useState(null);
 
   const load_data = async (id) => {
     const url = `/api/v1/show/${id}`;
@@ -47,11 +48,33 @@ const ViewContact = (props) => {
       ) : (
         <>
           <div className="text-center">
-            <h1>{contactData[0].firstName}</h1>
-            <h1>{contactData[0].lastName}</h1>
-            <h1>{contactData[0].email}</h1>
-            <h1>{contactData[0].phoneNumber}</h1>
+            <h3>First Name: {contactData[0].firstName}</h3>
+            <h3>Last Name: {contactData[0].lastName}</h3>
+            <h3>Email: {contactData[0].email}</h3>
+            <h3>Phone Number: {contactData[0].phoneNumber}</h3>
           </div>
+          {contactData[0].historyEdits.length > 0 ? (
+            <>
+              <h4 className="text-center">History of edits:</h4>
+              <div className="text-center">
+                {contactData[0].historyEdits
+                  .split("//")
+                  .map((subElement, index) => {
+                    if (subElement.indexOf("||") > 0) {
+                      return <div key={index}>{subElement}</div>;
+                    } else {
+                      return subElement
+                        .split("||")
+                        .map((secondSubElement, index) => {
+                          return <div key={index}>{secondSubElement}</div>;
+                        });
+                    }
+                  })}
+              </div>
+            </>
+          ) : (
+            <div></div>
+          )}
 
           <div className="container py-5">
             <div className="col-sm-12 col-lg-2">

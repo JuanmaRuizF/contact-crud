@@ -6,6 +6,7 @@ const CreateContact = (props) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  var historyEdits = "";
 
   const submitForm = (event) => {
     event.preventDefault();
@@ -17,6 +18,7 @@ const CreateContact = (props) => {
       lastName,
       email,
       phoneNumber,
+      historyEdits,
     };
     console.log(JSON.stringify(body));
     const token = document.querySelector('meta[name="csrf-token"]').content;
