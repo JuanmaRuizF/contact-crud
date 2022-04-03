@@ -13,10 +13,11 @@
 ActiveRecord::Schema.define(version: 2022_03_30_193555) do
 
   create_table "contacts", force: :cascade do |t|
-    t.string "firstName"
-    t.string "lastName"
-    t.string "email"
-    t.integer "phoneNumber"
+    t.string "firstName", null: false
+    t.string "lastName", null: false
+    t.string "email", null: false
+    t.integer "phoneNumber", null: false
+    t.string "historyEdits"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

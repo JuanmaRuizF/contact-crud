@@ -26,13 +26,30 @@
 // })
 
 import React from "react";
-import ReactDOM from "react-dom";
-
+import { render } from "react-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import App from "../components/App";
+import Home from "../components/Home";
+import Contacts from "../components/Contacts";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ViewContact from "../components/ViewContact";
+import CreateContact from "../components/CreateContact";
+import EditContact from "../components/EditContact";
 
 document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(
-    <App />,
+  render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/contact/:id" element={<ViewContact />} />
+          <Route path="/create_contact" element={<CreateContact />} />
+          <Route path="/edit/:id" element={<EditContact />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>,
     document.body.appendChild(document.createElement("div"))
   );
 });

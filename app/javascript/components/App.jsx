@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-const Counter = () => {
+import { Route, Switch, Link } from "react-router-dom";
+
+const App = () => {
   const [count, setCount] = useState(0);
   const increase = () => setCount(count + 1);
   const decrease = () => setCount(count - 1);
@@ -19,4 +21,4 @@ const Counter = () => {
     </>
   );
 };
-export default Counter;
+export default App;

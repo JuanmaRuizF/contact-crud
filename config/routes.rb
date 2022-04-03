@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-
-  root 'contact#index'
+  namespace :api do
+    namespace :v1 do
+      get 'contacts/index'
+      post 'contacts/create'
+      # post 'crearcontacto' => 'contacts/create'
+      get '/show/:id', to: 'contacts#show'
+      post '/destroy/:id', to: 'contacts#destroy'
+      post '/edit/:id', to: 'contacts#edit'
+    end
+  end
+  root 'homepage#index'
+  get '/*path' => 'homepage#index'
+ 
+  get 'contact/index'
 end
