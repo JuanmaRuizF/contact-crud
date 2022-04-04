@@ -209,7 +209,6 @@ const EditContact = () => {
                     <button
                       onClick={(e) => {
                         submitForm(e);
-                        // location.replace("http://localhost:3000/");
                       }}
                       className="btn custom-button mt-3"
                     >

@@ -42,7 +42,7 @@ const CreateContact = () => {
 
   const submitForm = async (event) => {
     event.preventDefault();
-
+    let fetchResult = false;
     const url = "/api/v1/contacts/create";
 
     if (!(await validateFormValues())) {
@@ -56,8 +56,6 @@ const CreateContact = () => {
       historyEdits,
     };
 
-    let fetchResult;
-
     await fetch(url, {
       method: "post",
       headers: {
@@ -67,10 +65,9 @@ const CreateContact = () => {
     }).then((response) => {
       if (response.ok) {
         fetchResult = true;
-      } else {
-        fetchResult = false;
       }
     });
+
     return fetchResult;
   };
 
@@ -130,8 +127,8 @@ const CreateContact = () => {
             <div className="row">
               <div className="col-sm">
                 <button
-                  onClick={(e) => {
-                    if (submitForm(e)) {
+                  onClick={async (e) => {
+                    if (await submitForm(e)) {
                       location.replace("http://localhost:3000/");
                     } else {
                       setTimeout(() => {
