@@ -6,6 +6,12 @@ contacts = Contact.create([
         phoneNumber: 987654321,
         historyEdits: ""
     },{
+        firstName: "Laura",
+        lastName: "Rodríguez",
+        email: "laura@gmail.com",
+        phoneNumber: 987654321,
+        historyEdits: ""
+    },{
         firstName: "Néstor",
         lastName: "García",
         email: "nestor@gmail.com",
@@ -18,9 +24,9 @@ contacts = Contact.create([
         phoneNumber: 987654321,
         historyEdits: ""
     },{
-        firstName: "Ana",
+        firstName: "Andrea",
         lastName: "Santana",
-        email: "ana@gmail.com",
+        email: "andrea@gmail.com",
         phoneNumber: 987654321,
         historyEdits: ""
     }
