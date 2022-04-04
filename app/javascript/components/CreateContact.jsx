@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { validate } from "schema-utils";
 
 const CreateContact = () => {
   const [firstName, setFirstName] = useState("");
@@ -23,7 +22,7 @@ const CreateContact = () => {
     }
     let data;
     let emailValidation = true;
-    fetch("/api/v1/contacts/index")
+    await fetch("/api/v1/contacts/index")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -31,9 +30,7 @@ const CreateContact = () => {
         throw new Error("Network error");
       })
       .then((response) => (data = response));
-
     data.map((element) => {
-      console.log(element.email);
       if (element.email === email) {
         setErrorMsg("A contact with the same email already exists.");
         emailValidation = false;
@@ -48,7 +45,7 @@ const CreateContact = () => {
 
     const url = "/api/v1/contacts/create";
 
-    if (!validateFormValues()) {
+    if (!(await validateFormValues())) {
       return false;
     }
     const body = {
@@ -69,7 +66,6 @@ const CreateContact = () => {
       body: JSON.stringify(body),
     }).then((response) => {
       if (response.ok) {
-        console.log("finfetch");
         fetchResult = true;
       } else {
         fetchResult = false;
@@ -136,7 +132,7 @@ const CreateContact = () => {
                 <button
                   onClick={(e) => {
                     if (submitForm(e)) {
-                      // location.replace("http://localhost:3000/");
+                      location.replace("http://localhost:3000/");
                     } else {
                       setTimeout(() => {
                         setErrorMsg("");

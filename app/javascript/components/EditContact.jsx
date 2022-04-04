@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 const EditContact = () => {
   const [loading, setLoading] = useState(true);
   const [contactData, setContactData] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   var firstName = null;
   var lastName = null;
@@ -43,25 +45,43 @@ const EditContact = () => {
     }
   };
 
-  const submitForm = (event) => {
+  const emailValidation = async () => {
+    let data;
+    let emailValidation = true;
+
+    await fetch("/api/v1/contacts/index")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network error");
+      })
+      .then((response) => (data = response));
+    data.map((element) => {
+      if (element.email === email && contactData[0].email !== element.email) {
+        setErrorMsg("A contact with the same email already exists.");
+        emailValidation = false;
+      }
+    });
+    return emailValidation;
+  };
+
+  const submitForm = async (event) => {
     event.preventDefault();
     var id = window.location.href.toString().split("/")[4];
     const url = `/api/v1/edit/${id}`;
 
+    if (!(await emailValidation())) {
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return;
+    }
     checkFieldValues("firstName", firstName);
     checkFieldValues("lastName", lastName);
     checkFieldValues("email", email);
     checkFieldValues("phoneNumber", phoneNumber);
     historyEdits = historyEdits.substring(0, historyEdits.length - 3) + " // ";
-
-    // if (firstName === null || firstName.length === 0) {
-    //   firstName = contactData[0].firstName;
-    // } else if (firstName !== contactData[0].firstName) {
-    //   if (historyEdits === null) {
-    //     historyEdits = contactData[0].historyEdits;
-    //     historyEdits += contactData[0].firstName + "->" + firstName + "||";
-    //   }
-    // }
 
     if (firstName === null || firstName.length === 0) {
       firstName = contactData[0].firstName;
@@ -84,16 +104,19 @@ const EditContact = () => {
       historyEdits,
     };
 
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    return fetch(url, {
+    // const token = document.querySelector('meta[name="csrf-token"]').content;
+    return await fetch(url, {
       method: "post",
       headers: {
-        "X-CSRF-Token": token,
+        // "X-CSRF-Token": token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     }).then((response) => {
-      console.log(response.ok);
+      setSuccessMsg("The changes have been successfully applied.");
+      setTimeout(() => {
+        setSuccessMsg("");
+      }, 5000);
     });
   };
 
@@ -108,6 +131,8 @@ const EditContact = () => {
           <div className="row">
             <div className="col-sm-12 col-lg-6 offset-lg-3">
               <h1 className="font-weight-normal mb-5">Edit the contact</h1>
+              <div className="error-text">{errorMsg}</div>
+              <div className="success-text">{successMsg}</div>
               <form>
                 <div className="form-group">
                   <label htmlFor="firstName">First name</label>
