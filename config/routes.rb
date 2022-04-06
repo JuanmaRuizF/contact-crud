@@ -8,8 +8,7 @@ Rails.application.routes.draw do
       post '/edit/:id', to: 'contacts#edit'
     end
   end
-  root 'homepage#index'
-  get '/*path' => 'homepage#index'
- 
-  get 'contact/index'
+
+  root 'contact#index'
+  get '/*path' => 'contact#index'
 end
