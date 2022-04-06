@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const ViewContact = (props) => {
+const ViewContact = () => {
   const [loading, setLoading] = useState(true);
   const [contactData, setContactData] = useState(null);
-  const [edits, setEdits] = useState(null);
+  const navigate = useNavigate();
 
   const load_data = async (id) => {
     const url = `/api/v1/show/${id}`;
@@ -27,7 +27,6 @@ const ViewContact = (props) => {
   const deleteContact = (e) => {
     var id = window.location.href.toString().split("/")[4];
     const url = `/api/v1/destroy/${id}`;
-    const token = document.querySelector('meta[name="csrf-token"]').content;
 
     fetch(url, {
       method: "POST",
@@ -48,7 +47,6 @@ const ViewContact = (props) => {
       ) : (
         <>
           <div className="container mt-5 border">
-            {/* <div className="row"> */}
             <div className="col-sm-12 col-lg-6 offset-lg-3">
               <div className="text-center mt-5">
                 <h3>Contact data</h3>
@@ -102,7 +100,7 @@ const ViewContact = (props) => {
                       className="btn delete"
                       onClick={(e) => {
                         deleteContact(e);
-                        location.replace("http://localhost:3000/");
+                        navigate("/");
                       }}
                     >
                       Delete Contact
@@ -118,7 +116,6 @@ const ViewContact = (props) => {
               </div>
             </div>
           </div>
-          {/* </div> */}
         </>
       )}
     </div>

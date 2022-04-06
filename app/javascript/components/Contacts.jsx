@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Contacts = (props) => {
+const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
-  var data;
+  const navigate = useNavigate();
 
   const load_data = async () => {
     const url = "/api/v1/contacts/index";
@@ -69,9 +69,6 @@ const Contacts = (props) => {
                           <h6 className="card-title text-center">
                             {contact.email}
                           </h6>
-                          {/* <h6 className="card-title text-center">
-                            {contact.phoneNumber}
-                          </h6> */}
                           <h4 className="card-title text-center">Actions:</h4>
                           <ul className="list-group list-group-flush">
                             <li className="list-group-item text-center">
@@ -95,7 +92,7 @@ const Contacts = (props) => {
                                 className="btn delete"
                                 onClick={(e) => {
                                   deleteContact(e, contact.id);
-                                  location.replace("http://localhost:3000/");
+                                  navigate("/");
                                 }}
                               >
                                 Delete Contact

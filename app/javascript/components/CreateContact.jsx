@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateContact = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,6 +9,8 @@ const CreateContact = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
   var historyEdits = "";
+
+  const navigate = useNavigate();
 
   const validateFormValues = async () => {
     if (
@@ -129,7 +131,7 @@ const CreateContact = () => {
                 <button
                   onClick={async (e) => {
                     if (await submitForm(e)) {
-                      location.replace("http://localhost:3000/");
+                      navigate("/");
                     } else {
                       setTimeout(() => {
                         setErrorMsg("");

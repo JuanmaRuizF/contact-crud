@@ -104,15 +104,13 @@ const EditContact = () => {
       historyEdits,
     };
 
-    // const token = document.querySelector('meta[name="csrf-token"]').content;
     return await fetch(url, {
       method: "post",
       headers: {
-        // "X-CSRF-Token": token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }).then((response) => {
+    }).then(() => {
       setSuccessMsg("The changes have been successfully applied.");
       setTimeout(() => {
         setSuccessMsg("");
