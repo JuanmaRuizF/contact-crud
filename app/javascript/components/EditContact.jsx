@@ -28,14 +28,18 @@ const EditContact = () => {
   };
 
   useEffect(() => {
-    var url = window.location.href.toString().split("/")[4];
-    load_data(url);
+    // Calls a fetch method to load data specifically from the id of the user. This id is displayed in the page routing: http://localhost:3000/contact/1
+    // so it is extracted from the window location to pass it to the method.
+    var id_num = window.location.href.toString().split("/")[4];
+    load_data(id_num);
   }, []);
 
   const checkFieldValues = (fieldName, fieldData) => {
+    //checks if the field is empty. In that case, it will get the original value for that field
     if (fieldData === null || fieldData.length === 0) {
       fieldData = contactData[0][fieldName];
     } else if (fieldData !== contactData[0][fieldName]) {
+      //if the field data is different from the one originally, it will edit the "historyEdits" variable, which stores a string with the history of changes made
       if (historyEdits === "") {
         historyEdits = contactData[0].historyEdits;
         historyEdits += contactData[0][fieldName] + "->" + fieldData + " || ";
@@ -46,8 +50,14 @@ const EditContact = () => {
   };
 
   const emailValidation = async () => {
+    //email validation, checks if there is an element with the same email.
     let data;
     let emailValidation = true;
+
+    if (contactData[0].email === email) {
+      //if the email provided is the same as the one already stored, return
+      return true;
+    }
 
     await fetch("/api/v1/contacts/index")
       .then((response) => {
@@ -58,7 +68,7 @@ const EditContact = () => {
       })
       .then((response) => (data = response));
     data.map((element) => {
-      if (element.email === email && contactData[0].email !== element.email) {
+      if (element.email === email) {
         setErrorMsg("A contact with the same email already exists.");
         emailValidation = false;
       }
@@ -71,12 +81,15 @@ const EditContact = () => {
     var id = window.location.href.toString().split("/")[4];
     const url = `/api/v1/edit/${id}`;
 
+    //if the email validation returns false (something was left empty or the email already exists), it will display the error message for 5 seconds.
     if (!(await emailValidation())) {
       setTimeout(() => {
         setErrorMsg("");
       }, 5000);
       return;
     }
+
+    //checks field values for each of the form inputs
     checkFieldValues("firstName", firstName);
     checkFieldValues("lastName", lastName);
     checkFieldValues("email", email);
@@ -103,7 +116,7 @@ const EditContact = () => {
       phoneNumber,
       historyEdits,
     };
-
+    //POST request to edit the values of the element.
     return await fetch(url, {
       method: "post",
       headers: {

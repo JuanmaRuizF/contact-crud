@@ -19,12 +19,16 @@ const ViewContact = () => {
       .then((response) => setContactData(response))
       .then(() => setLoading(false));
   };
+
   useEffect(() => {
-    var url = window.location.href.toString().split("/")[4];
-    load_data(url);
+    // Calls a fetch method to load data specifically from the id of the user. This id is displayed in the page routing: http://localhost:3000/contact/1
+    // so it is extracted from the window location to pass it to the method.
+    var id_number = window.location.href.toString().split("/")[4];
+    load_data(id_number);
   }, []);
 
-  const deleteContact = (e) => {
+  const deleteContact = () => {
+    //selects the id of the element to be deleted, and makes a POST request to delete that contact.
     var id = window.location.href.toString().split("/")[4];
     const url = `/api/v1/destroy/${id}`;
 

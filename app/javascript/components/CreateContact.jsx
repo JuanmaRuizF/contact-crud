@@ -13,6 +13,7 @@ const CreateContact = () => {
   const navigate = useNavigate();
 
   const validateFormValues = async () => {
+    //front-end validation of all fields. They can't be left empty, so in case it happens, an error msg will display.
     if (
       firstName === "" ||
       lastName === "" ||
@@ -22,6 +23,9 @@ const CreateContact = () => {
       setErrorMsg("There are fields bank. All fields are mandatory.");
       return false;
     }
+
+    //front-end unique email validation. Makes a request to get all the contact data and then checks if there is an element whose email is the same as the one written in the form.
+    //If this happens, it will display en error msg
     let data;
     let emailValidation = true;
     await fetch("/api/v1/contacts/index")
@@ -46,7 +50,7 @@ const CreateContact = () => {
     event.preventDefault();
     let fetchResult = false;
     const url = "/api/v1/contacts/create";
-
+    //before submitting the form, it has to validate that all fields are filled in, and that the email is unique.
     if (!(await validateFormValues())) {
       return false;
     }
@@ -57,7 +61,7 @@ const CreateContact = () => {
       phoneNumber,
       historyEdits,
     };
-
+    //POST request to create the contact with all the fields necessary.
     await fetch(url, {
       method: "post",
       headers: {

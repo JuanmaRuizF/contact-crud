@@ -7,6 +7,7 @@ const Contacts = () => {
   const navigate = useNavigate();
 
   const load_data = async () => {
+    //Gets contact data so it can be mapped into individual cards in the render method.
     const url = "/api/v1/contacts/index";
     await fetch(url)
       .then((response) => {
@@ -23,6 +24,7 @@ const Contacts = () => {
   }, []);
 
   const deleteContact = (e, index) => {
+    //Makes a POST request to destroy an element given its id.
     const url = `/api/v1/destroy/${index}`;
     fetch(url, {
       method: "POST",
@@ -58,6 +60,7 @@ const Contacts = () => {
               <div>Loading</div>
             ) : (
               <>
+                {/* Each contact is mapped into its individual card where it displays some information and links to other actions (delete, edit, view) */}
                 {contacts.map((contact, index) => {
                   return (
                     <div key={index} className="col-md-6 col-lg-4">
@@ -92,7 +95,7 @@ const Contacts = () => {
                                 className="btn delete"
                                 onClick={(e) => {
                                   deleteContact(e, contact.id);
-                                  navigate("/");
+                                  navigate(0);
                                 }}
                               >
                                 Delete Contact
